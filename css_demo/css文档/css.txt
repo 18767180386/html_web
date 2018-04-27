@@ -1,0 +1,40 @@
+http://www.runoob.com/css/css-tooltip.html
+
+
+如何解决inline-block元素的空白间距
+https://www.w3cplus.com/css/fighting-the-space-between-inline-block-elements
+
+
+css中margin-left和left的区别
+
+1,left
+
+left只要在设置 过定位位置position的情况下生效,
+
+且
+
+position: relative;或者position: absolute;
+
+2,margin-left
+
+margin-left是元素的外边距
+
+
+
+
+box-shadow: h-shadow v-shadow blur spread color inset;
+
+
+注释：box-shadow 向框添加一个或多个阴影。该属性是由逗号分隔的阴影列表，每个阴影由 2-4 个长度值、可选的颜色值以及可选的 inset 关键词来规定。省略长度的值是 0。
+值	描述	测试
+h-shadow	必需。水平阴影的位置。允许负值。	测试
+v-shadow	必需。垂直阴影的位置。允许负值。	测试
+blur	可选。模糊距离。	测试
+spread	可选。阴影的尺寸。	测试
+color	可选。阴影的颜色。请参阅 CSS 颜色值。	测试
+inset	可选。将外部阴影 (outset) 改为内部阴影。	测试
+
+
+
+
+http://www.runoob.com/css/css-examples.html    CSS 应用实例
