@@ -38,3 +38,7 @@ inset	可选。将外部阴影 (outset) 改为内部阴影。	测试
 
 
 http://www.runoob.com/css/css-examples.html    CSS 应用实例
+
+http://www.css88.com/  前端
+
+http://www.css88.com/book/css/values/color/rgba.htm   

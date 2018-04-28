@@ -1,0 +1,172 @@
+﻿	var body_sem_f = document.body;
+	var semuservisit = "";
+
+	var hostname_f = window.location.hostname;	//获取部分地址
+	var hostname_s = "chat.dodoca.com";
+
+	createLink_sem("//www.dodoca.com"+window.location.pathname+window.location.search);
+	
+	if(hostname_f == "wx.dodoca.dev" || hostname_f == "tnew.dodoca.com" || hostname_f == "t.dodoca.com" || hostname_f == "tnews.dodoca.com"){
+		hostname_s = "tchat.dodoca.com";
+        //hostname_s = "chat.dodoca.dev";
+	}else if(hostname_f == "t.news.dodoca.com"|| hostname_f == "t.new.dodoca.com"){
+		hostname_s = "t.chat.dodoca.com";
+	}
+
+//    	    	var end_time = new Date().getTime();
+	var ready_time = 0;//end_time-start_time;	//载入时间
+	var sem_user = getCookieSem_WY("sem_user");//访客身份标识
+
+	if(sem_user == "" || sem_user == null || sem_user == "undefined"){  
+		$.ajax({
+			url:"//"+hostname_s+"/evercookie/getsemuser",
+			async: false,
+			type: "GET",
+			dataType: 'jsonp',
+			jsonp: 'jsoncallback',
+			success:function(data){
+				
+				setCookieSem_WY("sem_user", data ,3650);
+				sem_user = data;
+				
+				if(sem_user == "" || sem_user == null || sem_user == "undefined"){  
+					
+					$.ajax({
+						url:"//"+hostname_s+"/evercookie/getsemuser",
+						async: false,
+						type: "GET",
+						dataType: 'jsonp',
+						jsonp: 'jsoncallback',
+						success:function(data1){
+							setCookieSem_WY("sem_user", data1 ,3650);
+							sem_user = data1;
+							evercookie_savedata();
+						}
+					});
+					
+			    }else{
+			    	evercookie_savedata();
+			    }
+				
+			}
+		});
+    }else{
+    	
+    	evercookie_savedata();
+    }
+	
+	function evercookie_savedata(){
+
+		var href_f = location.href; //全地址
+//		var pathname_f = window.location.pathname;	//获取部分地址
+//			var search_f = window.location.search;	//获取参数
+		var num = href_f.indexOf("?");
+		var referrer = document.referrer;	//来源url
+		
+		var parameter = "";		//取得所有参数   stringvar.substr(start [, length ]
+		if(num > 1){
+		parameter = href_f.substr(num + 1); 
+		}
+		
+		
+		$.ajax({
+		url:"//"+hostname_s+"/evercookie/savedata",
+		type: "GET",
+		dataType: 'jsonp',
+		jsonp: 'jsoncallback',
+		data: {"sem_user" : sem_user , "ready_time" : ready_time , "hostname_f" : hostname_f , "referrer" : referrer , "parameter" : parameter ,"href_f" : href_f},
+		success:function(data){
+
+            semuservisit = data.suvlid;
+            var custel = data.custel;
+            if(custel != ""){
+                if($("#custel")){
+                    $("#custel").html(custel);
+                }
+				if($(".spread_mblflag")){
+					custel = custel.replace(/\s+/g,"");
+					$(".spread_mblflag").attr("href","tel:"+custel);
+				}
+            }
+			console.log(semregionpage);
+			var script_sem_f  = document.createElement("script");  
+			script_sem_f.type = "text/javascript"; 
+			script_sem_f.id = "cochaturl";
+			script_sem_f.src = "//"+hostname_s+"/www/js/docaht.js?open=iframe&id="+sem_user+"&key="+semuservisit+"&origin="+semregionpage;
+			body_sem_f.appendChild(script_sem_f);
+			script_sem_f.onload = script_sem_f.onreadystatechange=function(){
+				
+				var ua3 = navigator.userAgent.toLowerCase();
+			    if(!this.readyState||this.readyState=='loaded'||this.readyState=='complete'){ 
+			    	dochat_wsl_run(body_sem_f); 
+			    }else if(this.readyState=='loading' && ua3.indexOf("msie") >= 0 ){
+			    	script_sem_f.reload();
+			    }
+			    
+			    script_sem_f.onload = script_sem_f.onreadystatechange=null;
+			} 
+		
+		}
+		});
+		
+	}
+	
+
+	//设置cookie
+	function setCookieSem_WY(cname, cvalue, exdays) {
+	    var d = new Date();
+	    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	    var expires = "expires="+d.toUTCString();
+	    document.cookie = cname + "=" + cvalue + "; " + expires;
+	}
+	//获取cookie
+	function getCookieSem_WY(cname) {
+	    var name = cname + "=";
+	    var ca = document.cookie.split(';');
+	    for(var i=0; i<ca.length; i++) {
+	        var c = ca[i];
+	        while (c.charAt(0)==' ') c = c.substring(1);
+	        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+	    }
+	    return "";
+	}
+	
+    function createLink_sem(URL){   
+
+        var var_head_sem = document.getElementsByTagName('head')[0],
+            linkTag = null,
+            isIE = function(){
+                var version = 0, userAgent = navigator.userAgent.toLowerCase();
+                
+                if (/(msie)\D+(\d[\d.]*)/.test(userAgent)) {
+                    version = RegExp.$2;
+                }
+                           
+                version = parseInt(version,10);
+               
+                            return version;
+            }();
+
+  
+        if(!URL){
+            return false;
+        }
+              
+        /*if(isIE && isIE < 9){
+            linkTag = document.createStyleSheet(URL);
+   
+        }
+        else{
+            linkTag = document.createElement('link');
+            linkTag.href = URL;       
+            var_head_sem.appendChild(linkTag);       
+       
+        }*/
+		
+		linkTag = document.createElement('link');
+		linkTag.href = URL;       
+		var_head_sem.appendChild(linkTag);     
+
+        linkTag.rel = "canonical";
+    }
+
