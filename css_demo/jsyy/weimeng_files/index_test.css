@@ -1,0 +1,17 @@
+.m-ban.buss {
+    background-color: #1746d2
+}
+
+.buss .m-ban-lnk:hover,
+.buss .m-snav-b.s1,
+.buss .m-snav-b:hover {
+    color: #1746d2
+}
+
+.buss .m-ban-lnk-h {
+    background: #FFF;
+    box-shadow: 0 10px 16px 0 rgba(79, 39, 39, .16);
+    border-radius: 5px;
+    width: 100%;
+    top: 120%
+}
