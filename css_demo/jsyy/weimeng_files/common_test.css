@@ -1134,7 +1134,8 @@ only screen and (min-device-pixel-ratio:2) {
     text-align: center;
     bottom: 10px;
     width: 100%;
-    z-index: 19
+    z-index: 19;
+    background: #ff7800
 }
 
 .m-ban-page>li {

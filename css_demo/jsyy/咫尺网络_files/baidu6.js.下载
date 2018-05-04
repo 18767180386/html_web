@@ -1,0 +1,317 @@
+var regTel = /^1\d{10}$/;
+// 注册
+  $('#baidu_login_enroll').on('click', function(event) {
+    var phone =$('#baidu_reg_contact').val().trim(),
+        graphical_code = $('#baidu_perfit_pic_code').val().trim(),
+        code = $('#baidu_get_complete_code').val().trim(),
+        pw = $('#baidu_register_pw').val().trim();
+    if(phone.indexOf(" ")!=-1){
+    alertTip("手机号不能有空格");
+    return false;
+    }
+    if(code.indexOf(" ")!=-1){
+    alertTip("验证码不能有空格");
+    return false;
+    }
+    if(pw.indexOf(" ")!=-1){
+    alertTip("密码不能有空格");
+    return false;
+    }
+    if(phone == ''){
+    alertTip("请输入手机号");
+    return false;
+    }
+    if(graphical_code == ''){
+    alertTip("请输入图形验证码");
+    return false;
+    }
+
+    if(code == ''){
+    alertTip("请输入手机验证码");
+    return false;
+    }
+    if(pw == ''){
+    alertTip("请输入6-20位密码");
+    return false;
+    }
+    if (!regTel.test(phone)) { 
+          alertTip('请输入正确手机号');
+          return;
+        }   
+    $.ajax({
+      url: '/index.php?r=Login/UnionRegister',
+      type: 'get',
+      dataType: 'json',
+      data: {phone: phone,code: code,password:pw},
+      success:function(data){
+          if (data.status != 0) { 
+            alertTip(data.data);
+            return;
+          }
+        setTimeout(function(){
+          window.location.href= '/regsuccess.html';
+        });
+          },
+
+    })    
+  });
+  getPicCode();
+ // 图形验证码码
+ $('#baidu_pic_code').on('click', getPicCode);
+  function getPicCode(){
+    $('#baidu_pic_code').attr('src', '/index.php?r=Login/GetNewIdentifyCode&i=' + parseInt(Math.random() * 10000000))
+  }
+  // 获取验证码
+  $('#baidu_get_code').on('click', function(event) {
+  getBoundPhoneCode($(this));
+});
+    // 验证码验证
+  function getBoundPhoneCode($this) {
+    var phone = $('#baidu_reg_contact').val().trim(),
+        code = $('#baidu_perfit_pic_code').val().trim();
+    if(!phone){
+          alertTip('请输入手机号');
+          return;
+        }
+        if (!regTel.test(phone)) {
+          alertTip('请输入正确手机号');
+          return;
+        }
+        // if (!code) {
+        //  alertTip('请输入验证码');
+        //  return;
+        // }
+    $.ajax({
+      url:'/index.php?r=Login/PhoneResetCode',
+      type:'get',
+      data:{phone: phone,allow:1,pic_code: code},
+      dataType:'json',
+      success:function(data){
+        if(data.status == 0){
+          alertTip(data.data);
+          var count = 59;
+          $this.addClass('invalid-btn');
+          var countInterval = setInterval(function(){
+            $this.text(count-- +'s后重新获取').css({'background':'#eaeaea'});
+          }, 1000);
+          console.log($this)
+          setTimeout(function(){
+            clearInterval(countInterval);
+            $this.text('重新获取').css({'background':'#eaeaea'});
+            $this.removeClass('invalid-btn');
+          },60000);
+        // }else{
+        //  $this.removeClass('invalid-btn');
+        //  alertTip(data.data);
+        }else if(data.status  && data.need_pic_code == 1){
+          alertTip(data.data);
+           $('.register_verify').show();
+           getPicCode();
+        }else{
+          getPicCode();
+          alertTip(data.data);
+        }
+
+      },
+      error:function(data){
+        $this.removeClass('invalid-btn');
+        alertTip('请输入正确的手机号码');
+      }
+    });
+  }
+  // 作品
+  var template = '<li class="intt_list" app_id="${app_id}" usertoken=${user_token}>'
++'<img class="intt_feng" src="${cover}" onerror="erroritt(this)">'
++'<p class="inv-time" style="${adminUser}">${create_time}</p><div class="intt_setwrap"><p title="${app_name}">${app_name}</p>'
++'</div>'+'<div class="intt_mask"><img src="${qrcode}"><button class="itt_preview">预览</button>${message}</div></li>',
+
+default_cover = 'http://testfe.zhichiwangluo.com/static/pc/index/img/in4.jpg',
+isAdmin = 0;
+function erroritt(that){
+  that.src = 'http://testfe.zhichiwangluo.com/static/pc/index/img/in4.jpg';
+}
+  $.ajax({
+    url: '/index.php?r=pc/Index/GetWebAppShow',
+    type: 'get',
+    dataType: 'json',
+    data: {},
+    success:function(data){
+      var int_li = '';
+      $(data.data).each(function(index, item) {
+          int_li += parseTemplate(item);
+        });
+      $("#list").html(int_li);
+
+    }
+  })
+  function parseTemplate(data , type){
+  var html = template.replace(/\$\{(\w+)\}/g, function($0, $1){
+    switch($1){
+      case 'adminUser' : return isAdmin == 1 ? '' : 'display:none';
+      case 'view' : return (data[$1]>10000) ? (Math.floor(data[$1]/10000)+'万') : data[$1];
+      case 'cover': return data[$1] || default_cover;
+      // case 'message': return isAdmin == 1 ? '<button class="message">留言</button>' : '';
+      case "user_token": return isAdmin == 1 ? data[$1] : '';
+      case "is_mobile" : return data[$1] == 1 ? 'background: url(http://testfe.zhichiwangluo.com/static/pc/index/img/mobile.png) no-repeat 97%;' : '';
+      default :   return data[$1];
+    }
+  });
+
+  return html;
+}
+// 预览
+$("#list").on('click', '.itt_preview', function(event) {
+  event.preventDefault();
+  window.open('/make/'+$(this).parent().parent().attr('app_id')+'.html');
+
+  event.stopPropagation();
+});
+// 代理加盟
+ function getArea(container, pid, tip, targetPid) {
+     $.ajax({
+       url: '/index.php?r=Region/getRegionList',
+       type: 'get',
+       data: {
+         pid: pid
+       },
+       dataType: 'json',
+       success: function(data) {
+         if (data.status == 0) {
+           var list = data.data,
+             listStr = '';
+           $(list).each(function(index, item) {
+             listStr += '<option value="' + item.id + '">' + item.name + '</option>';
+           });
+           $(container).append(listStr);
+           if (targetPid) {
+             $(container).find('option[value="' + targetPid + '"]').prop('selected', true);
+           }
+         } else {
+           alertTip(tip);
+         }
+       },
+       error: function(data) {
+         alertTip(tip);
+       }
+     });
+   }
+getArea('#province_Select', 0, '请求省列表失败，请刷新重试');
+   $('#province_Select').on('change', function() {
+     $('#city_Select').empty().append('<option selected disabled>选择市</option>');
+     getArea('#city_Select', $(this).val(), '请求市列表失败，请重试');
+   });
+   getArea('#province_Select_personal', 0, '请求省列表失败，请刷新重试');
+   $('#province_Select_personal').on('change', function() {
+     $('#city_Select_personal').empty().append('<option selected disabled>选择市</option>');
+     getArea('#city_Select_personal', $(this).val(), '请求市列表失败，请重试');
+   });
+ function testPhone(phone) {
+     var regphone = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+     return regphone.test(phone);
+   }
+   $('#join_btn').on('click', function() {
+     var _name = $('#agent_name').val(),
+       _phone = $('#agent_phone').val(),
+       region_id = $('#city_Select').val(),
+       _company_main_product = $("#company_main_product").val(),
+     _this = $(this);
+
+     if (!_name) {
+       alertTip("姓名未填写！");
+       return;
+     }
+     if (_name.length > 10) {
+       alertTip("姓名长度不能超过10");
+       return;
+     }
+     if (!_phone) {
+       alertTip("电话未填写！");
+       return;
+     }
+     if (!testPhone(_phone)) {
+       alertTip("请填写正确的电话！");
+       return;
+     }
+     if (!_company_main_product) {
+       alertTip("主营业务未填写！");
+       return;
+     }
+     if (!region_id) {
+       alertTip("地区未选择！");
+       return;
+     }
+     var applyData = {
+       name: _name,
+       phone: _phone,
+      //  qq: _qq,
+       region_id: region_id,
+       district_agent: 1,
+       product: _company_main_product,
+      //  target_customers: _main_client,
+      //  project: _localmarket_analysis_plan,
+     };
+
+     $.ajax({
+       url: '/index.php?r=pc/Biaodan/AgentApply', 
+       dataType: 'json',
+       type: 'get',
+       data: applyData,
+       success: function(data) {
+         if (data.status == 0) {
+           alertTip("提交成功<br/>若初步审核通过，工作人员会在5个工作日内与您联系");
+           $("#agent_name").val("");
+           $("#agent_phone").val("");
+           $("#company_main_product").val("");
+           $("#province_Select option:first").prop("selected", true);
+           $("#city_Select").empty().append("<option value=''>选择市</option>");
+           $("#city_Select option:first").prop("selected", true);
+         } else {
+           alertTip(data.data);
+           //  _this.removeClass('js-ajax');
+         }
+       },
+       error: function(data) {
+         alertTip(data.data);
+         // _this.removeClass('js-ajax');
+       }
+     })
+   })
+   // 代理试用切换
+   $('.banner-section').on('click', '#banner_btn', function(event) {
+     var nickname = $('.banner_btn').attr('data-name');
+     if(!nickname){
+      $('.exploit_wrap').show().siblings('.baidu_wrap').hide();
+      $('.agency-cooperation').hide().removeClass('is_show');
+      if ($('.register_baidu').hasClass('is_show')) {
+        if ($('.register_baidu').hasClass('is_showing')) {
+          return;
+        }
+        $('.register_baidu').hide().addClass('is_showing');
+        setTimeout(function () {
+          $('.register_baidu').show().removeClass('is_showing');
+          $('#baidu_reg_contact').focus();
+        }, 300);
+        return;
+      }
+      $('.register_baidu').css('opacity', 0).show().addClass('is_show');
+      $('#baidu_reg_contact').focus();
+     }else{
+       window.open("/index.php?r=pc/Webapp/myapp")
+     }
+   }).on('click', '#surrogate', function(event) {
+      $('.register_baidu').hide().removeClass('is_show');
+      $('.join_wrap').show().siblings('.baidu_wrap').hide();
+      if ($('.agency-cooperation').hasClass('is_show')) {
+        if ($('.agency-cooperation').hasClass('is_showing')) {
+          return;
+        }
+        $('.agency-cooperation').hide().addClass('is_showing');
+        setTimeout(function () {
+          $('.agency-cooperation').show().removeClass('is_showing');
+          $('#agent_name').focus();
+        }, 300);
+        return;
+      }
+      $('.agency-cooperation').css('opacity', 0).show().addClass('is_show');
+      $('#agent_name').focus();
+   });
