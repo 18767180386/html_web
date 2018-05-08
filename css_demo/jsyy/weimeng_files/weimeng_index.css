@@ -1,7 +1,7 @@
 .nav {
     height: 60px;
     background: blue;
-    padding-top: 10px;
+    padding-top: 0px;
     box-sizing: border-box
 }
 
@@ -13,6 +13,7 @@
 .logo-div img {
     width: 128px;
     height: 40px;
+    margin-top: 10px
 }
 
 .nav_tab {
@@ -24,10 +25,16 @@
 .nav_tab li {
     float: left;
     /*  width: 100px;*/
-    line-height: 40px;
+    line-height:60px;
     text-align: center;
-    margin-left: 20px
+    margin-left: 20px;
 }
+
+.nav_tab>li:hover .plan{
+    display: block
+}
+
+
 
 .nav_tab a {
     font-size: 14px;
@@ -36,9 +43,9 @@
 }
 
 .nav_login {
-    height: 50px;
     margin-left: 20px;
-    padding: 8px;
+    text-align: center;
+    margin-top: 15px;
 }
 
 .nav_login>li {
@@ -66,20 +73,24 @@
 .nav_login>li:nth-last-child(2) {
     color: blue;
     width: 70px;
-    height: 25px;
+    height: 27px;
     border: 1px solid white;
-    text-align: center;
+    text-align:center;
+    padding: 2px;
     background: white;
-    border-radius: 2px
+    border-radius: 2px;
+    box-sizing: border-box
 }
 
 .nav_login>li:last-child {
     color: white;
     width: 70px;
-    height: 25px;
+    height: 27px;
     border: 1px solid white;
     text-align: center;
-    border-radius: 2px
+    border-radius: 2px;
+    padding: 2px;
+    box-sizing: border-box
 }
 
 .plan {
@@ -87,11 +98,14 @@
     background: black;
     top: 60px;
     left: 15%;
+    display:none
 }
 
 .plan_item {
     width: 150px;
-    padding: 20px
+    padding: 20px;
+    margin-left: 20px;
+    box-sizing: content-box
 }
 
 .plan_item ul li {
@@ -106,8 +120,48 @@
     display: inline-block
 }
 
+
+.plan_item li:hover{
+   background-color: #f1f1f1
+}
+
 .nav_content {
     width: 1100px;
     height: 100%;
     margin: 0 auto;
+}
+
+.banner {
+    width: 100%;
+    background: brown;
+    margin: 0 auto;
+    text-align: center;
+    height: 300px;
+}
+
+.banner img{
+   width:100%;
+   margin: 0 auto;
+   height: 300px; 
+}
+
+.tab_ponit{
+    width: 100%;
+    line-height: 30px;
+    position: absolute;;
+    background: blueviolet;
+    margin-top: -30px;
+    z-index: 10;
+    text-align: center
+}
+
+.tab_ponit ul{
+    width: 300px;
+    margin: 0 auto;
+}
+
+.tab_ponit ul li{
+    width: 30px;
+    margin-left: 30px;
+    float: left;
 }
