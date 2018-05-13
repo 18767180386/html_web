@@ -92,3 +92,363 @@ element1~element2	p~ul	选择前面有 <p> 元素的每个 <ul> 元素。	3
 :checked	input:checked	选择每个被选中的 <input> 元素。	3
 :not(selector)	:not(p)	选择非 <p> 元素的每个元素。	3
 ::selection	::selection	选择被用户选取的元素部分。	3
+
+
+
+http://www.css88.com/book/css/   css手册
+
+
+
+
+https://blog.csdn.net/RLTlove/article/details/78650459  
+
+css定位
+
+首先，通俗的定位有三个：
+
+1、position：absolute   绝对定位
+
+2、position:relative;     相对定位
+
+3、position:fixed;       固定定位
+
+
+1、绝对定位
+
+绝对定位中的绝对，是相对于父元素讲的，若父元素没有定位（没有position属性），则继续找父元素的父元素，以此类推，直到找到一个有定位的父元素为止，若父元素都没有定位，则相对于body来进行绝对定位！
+
+直接上代码：
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title></title>
+
+<style>
+
+*{
+
+margin: 0;
+
+padding: 0;
+
+}
+
+.frame{
+
+width: 500px;
+
+height: 500px;
+
+background-color: green;
+
+position: relative;
+
+top: 200px;
+
+}
+
+.box{
+
+width: 200px;
+
+height: 200px;
+
+background-color: red;
+
+position:absolute;
+
+top: 50px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="frame">
+
+<div class="box"></div>
+
+</div>
+
+</body>
+
+</html>
+
+我这里写了一个div（frame），长宽都是500px，背景色为绿色，top值为200，意思为上部距离父元素body的距离为200px，还有一个div（box），长宽为200px，距父元素（frame）的距离为50px，背景颜色为红色。
+
+效果图：
+
+
+
+去掉frame里面的position之后，效果图：
+
+
+可以看出来，父元素没有定位之后，子元素会相对于有定位的父元素来进行定位。
+
+2、相对定位
+
+相对定位的使用，是使元素真实位置在原来位置的前提下，显示的效果不同。不多说，上代码，事实是最好的解释！
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title></title>
+
+<style>
+
+*{
+
+margin: 0;
+
+padding: 0;
+
+}
+
+.frame{
+
+width: 500px;
+
+height: 500px;
+
+background-color: green;
+
+position: relative;
+
+top: 200px;
+
+}
+
+.box{
+
+width: 800px;
+
+height: 200px;
+
+background-color: red;
+
+z-index: 1;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="frame"></div>
+
+<div class="box"></div>
+
+</body>
+
+</html>
+
+你以为效果会是这样的？
+
+
+NoNoNo
+
+都说了，效果不同的。
+
+其实，是这样的：
+
+
+
+绿色元素还在原来的位置（ps：图中黑色框框里面），只是表面上不再那里而已。
+
+
+相对定位适合用于微调！
+
+2、固定定位
+
+固定定位使得元素相对于屏幕来说固定！
+
+举例：
+
+
+经常逛京东的童鞋应该见过这个东西，不管鼠标怎么滑，就是不动地。这就使用的固定定位！
+
+补充：
+
+top、right、bottom、left只有在有定位时才有效果！
+
+例：position:absolute;
+
+top:50px;
+
+2、margin/padding
+
+margin有四个：margin-top、margin-right、margin-bottom、margin-left，指的是元素的外边距（上、右、下、左）；
+
+padding同样有四个：padding-top、padding-right、padding-bottom、padding-left，指的是元素的内边距（上、右、下、左）；
+
+
+红色部分是边框border，元素里面有一部分是不能装东西的，是padding（内边距），真正的容器（装东西的部分）才是我们设定的元素的大小。而外边距则是元素距离另一个元素的距离，是不同的元素
+
+4.1功能
+
+margin和padding的功能是使得元素在不使用定位的情况下根据需求改变元素位置。
+
+现在看一段代码：
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title></title>
+
+<style>
+
+*{
+
+margin: 0;
+
+padding: 0;
+
+}
+
+.frame{
+
+width: 500px;
+
+height: 500px;
+
+background-color: green;
+
+}
+
+.box{
+
+width: 200px;
+
+height: 200px;
+
+background-color: red;
+
+margin-top: 50px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="frame">
+
+<div class="box"></div>
+
+</div>
+
+<script type="text/javascript" src="js/index.js"></script>
+
+</body>
+
+</html>
+
+代码执行结果如下：
+
+
+两个元素，子元素和父元素的上面外边距为50px，然而这样做的话会使得父元素一起下移50px。因为这时父元素和子元素的上面是重合的（上面边界重合），会出现问题。这并不是我们想要得结果，所以要想办法解决咯。解决办法如下：
+
+1、给父元素加border（或者border-top，取决于哪里重合，此处为上面）
+
+2、给父元素加overflow：hidden（这个属性很强大，可以清除很多不正常情况）;
+
+3、给父元素加padding（同1，取决于哪里重合）
+
+4、给父元素添加绝对定位position：absolute;（注：相对定位不可以）
+
+5、给子元素添加绝对定位之后给父元素添加相对定位或绝对定位。
+
+6、给父元素添加float，且值必须是left或right，其余值inherit、initial、none无效。
+
+7、给子元素添加float，属性值同6。
+
+以上解决方法亲测有效！
+
+这里特别说明：
+
+1、建议使用前五种，因为float值会改变元素位置，不建议使用，没必要为了解决这个    问题而引入新的麻烦！
+
+2、注意使用padding之后，要根据padding值修改元素的width和height大小。因为盒    子的宽度=：width+padding-left+padding-right+border-left+border-right，高度同上（我    们在css里设置的width和height只是元素的内容区域，不包括padding和border）
+
+       所以添加padding和border后会影响元素的大小。
+
+4.2属性值
+
+  有时候我们会见到4个属性值padding：1px 1px 1px 1px;或3个属性值padding：1px 1px 1px; 或2个属性值padding：1px 1px;或一个属性值padding:1px;这些值代表的方向（上、 右、下、左）并不同。margin属性值代表的意义与padding相同，此处不再特别说明。
+
+1、一个属性值
+
+四个方向都有效果
+
+例：padding:50px;相当于上（padding-top）、右（padding-right）、下（padding-bottom）、 左（padding-left）四个方向 的内边距都是50px。
+
+2、两个属性值
+
+第一个值设置的是padding-top、padding-bottom两个属性的值，第二个值设置的 是padding-right、padding-left两个属性的值。
+
+例：padding:50px 100px;相当于padding-top、padding-bottom两个属性值为50px， padding-right、padding-left值为100px。
+
+3、三个属性值
+
+第一个值设置top，第二个值设置right和left两个方向，第三个值设置bottom
+
+例 ：padding:10px 20px 30px;相当于：
+
+padding-top:10px;
+
+padding-right:20px;
+
+padding:bottom:30px;
+
+padding:left:20px;
+
+4、四个属性值
+
+四个值对应padding-top、padding-right、padding-bottom、padding-left;
+
+例：padding:10px 20px 30px 40px;相当于：
+
+padding-top:10px
+
+padding-right:20px;
+
+padding-bottom:30px;
+
+padding-left:40px;
+
+5、属性值取值范围
+
+padding的取值范围为大于0的数（小数也可以的）
+
+margin的取值范围为实数，小于0也有效果。
+
+
+https://www.cnblogs.com/iceflorence/p/5798553.html
+
+CSS中的三种基本的定位机制
+
+
+https://blog.csdn.net/weixistyle/article/details/78582199?locationNum=2&fps=1  HTML+CSS网页设计视频教程
