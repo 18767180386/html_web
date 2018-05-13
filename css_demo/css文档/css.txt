@@ -44,6 +44,12 @@ http://www.css88.com/  前端
 http://www.css88.com/book/css/values/color/rgba.htm   
 
 
+<<<<<<< HEAD
+http://www.shejidaren.com/15-useful-css-tutorials.html 15个实用的CSS在线实例教程
+
+
+http://www.daqianduan.com/1299.html   5个实用的CSS3实例
+=======
 CSS3 选择器
 在 CSS 中，选择器是一种模式，用于选择需要添加样式的元素。
 "CSS" 列指示该属性是在哪个 CSS 版本中定义的。（CSS1、CSS2 还是 CSS3。）
@@ -92,6 +98,7 @@ element1~element2	p~ul	选择前面有 <p> 元素的每个 <ul> 元素。	3
 :checked	input:checked	选择每个被选中的 <input> 元素。	3
 :not(selector)	:not(p)	选择非 <p> 元素的每个元素。	3
 ::selection	::selection	选择被用户选取的元素部分。	3
+<<<<<<< HEAD
 
 
 
@@ -452,3 +459,6 @@ CSS中的三种基本的定位机制
 
 
 https://blog.csdn.net/weixistyle/article/details/78582199?locationNum=2&fps=1  HTML+CSS网页设计视频教程
+=======
+>>>>>>> c694b8be6cc66acd5cefa1476351f5576937b447
+>>>>>>> bf8e7f9e6ef229894e77df0086db91f2b34d1014
