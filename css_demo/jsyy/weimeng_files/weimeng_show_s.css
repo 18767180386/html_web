@@ -1,0 +1,71 @@
+.nav {
+    height: 60px;
+    background-color: blue;
+    text-align: center;
+    position: relative;
+}
+
+.nav-content {
+    width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 60px;
+}
+
+.nav-content img {
+    width: 128px;
+    height: 48px;
+    float: left;
+    margin-top: 6px;
+}
+
+.nav_tab {
+    margin-left: 30px;
+}
+
+.nav_tab>li {
+    float: left;
+}
+
+.nav_tab>li:hover .plan {
+    display: block;
+}
+
+.nav_tab>li:not(:first-child) {
+    margin-left: 20px;
+}
+
+.nav_tab>li a {
+    color: white;
+}
+
+.nav_login {
+    margin-left: 10px;
+}
+
+.nav_login>li {
+    float: left;
+    color: white;
+    margin-left: 10px;
+}
+
+.plan {
+    position: absolute;
+    background-color: blueviolet;
+    top: 60px;
+    left: 25%;
+    display: none;
+}
+
+.plan_item {
+    width: 150px;
+    height: 100%;
+    padding: 20px;
+    margin-left: 20px;
+    overflow: hidden;
+}
+
+.plan_item li {
+    height: 60px;
+    text-align: center
+}
